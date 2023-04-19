@@ -20,15 +20,6 @@ public class Practice2 {
             }
         }
         while(!isFinish(arr)){
-            System.out.print("Enter coordinate: ");
-            int a = sc.nextInt()-1;
-            int b = sc.nextInt()-1;
-            int c = sc.nextInt()-1;
-            int d = sc.nextInt()-1;
-            if(answer[a][b] == answer[c][d]){
-                arr[a][b] = answer[a][b];
-                arr[c][d] = answer[c][d];
-            }
             for(int i = 0; i < 5; i++){
                 if(i==0) System.out.print(" ");
                 else System.out.printf("%3d", i);
@@ -40,6 +31,17 @@ public class Practice2 {
                     System.out.printf("%3c", arr[i][j]);
                 }
                 System.out.println();
+            }
+            System.out.println();
+            System.out.print("Enter Coordinate: ");
+            int a = sc.nextInt()-1;
+            int b = sc.nextInt()-1;
+            int c = sc.nextInt()-1;
+            int d = sc.nextInt()-1;
+
+            if(answer[a][b] == answer[c][d]){
+                arr[a][b] = answer[a][b];
+                arr[c][d] = answer[c][d];
             }
         }
 

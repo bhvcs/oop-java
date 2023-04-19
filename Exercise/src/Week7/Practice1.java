@@ -19,7 +19,6 @@ public class Practice1 {
         int num = 1;
         int x = 0;
         int y = 0;
-        int c,r = 0;
 
         for(int i = x; i < (n+1)/2; i++){
             for(int j = x; j < n; j++){
