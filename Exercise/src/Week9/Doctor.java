@@ -1,8 +1,10 @@
 package Week9;
 
+import Week6.Exercise1.Person;
+
 import java.util.Date;
 
-public class Doctor extends Person{
+public class Doctor extends Person {
     private String hospital;
     public Doctor(String name, Date born, Date died, String hospital) {
         super(name, born, died);

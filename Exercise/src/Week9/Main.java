@@ -17,7 +17,7 @@ public class Main {
         Patient patient3 = new Patient("patient3", myDate5, null, "dental");
 
         Doctor doctor1 = new Doctor("Doctor1", myDate1, myDate4, "sebrance");
-        Doctor doctor2 = new Doctor("Doctor2", myDate1, myDate4, "sebrance");
+        Doctor doctor2 = new Doctor("Doctor1", myDate1, myDate4, "sebrance");
 
         Physician physician = new Physician("Physician", myDate2, null, "meongdong");
 
