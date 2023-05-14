@@ -79,5 +79,4 @@ public abstract class Cargo {
     }
     public abstract double consumption();
     public abstract String getType();
-
 }

@@ -20,7 +20,9 @@ public class Truck {
     private ArrayList<Cargo> currentCargoes = new ArrayList<>();
 
     public Truck(int ID, Warehouse w, int totalWeight, int maxNumOfAllCargoes, int maxNumOfHeavyCargoes, int maxNumOfDangerousCargoes,
-                 int maxNumOfLiquidCargoes, double fuelPerKm) {
+                 int maxNumOfLiquidCargoes, double fuelPerKm) throws Exception {
+        if(ID < 0 || totalWeight < 0 || maxNumOfAllCargoes < 0 || maxNumOfHeavyCargoes < 0 || maxNumOfDangerousCargoes < 0 ||
+        maxNumOfLiquidCargoes < 0 || fuelPerKm < 0) throw new Exception();
         this.ID = ID;
         this.currentWarehouse = w;
         this.totalWeight = totalWeight;
@@ -100,7 +102,8 @@ public class Truck {
         }
         return false;//fuel이 부족한 경우
     }
-    public void reFuel(double amount) {
+    public void reFuel(double amount) throws Exception {
+        if(amount < 0) throw new Exception();
         fuel += amount;
     }
     public String formattingTruck(){
