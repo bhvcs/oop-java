@@ -46,11 +46,10 @@ public abstract class Cargo {
         return arrayLists;
     }
     public static ArrayList<String> formattingCargoes(ArrayList<Cargo> cargoes){
-        ArrayList<String> formatArr = new ArrayList<>();//시발련아        String str = "";
+        ArrayList<String> formatArr = new ArrayList<>();
         ArrayList<Integer>[] arr = categorizeCargo(cargoes);
         for(int i = 0; i < 4; i++){
             if(!arr[i].isEmpty()){//비어 있지 않다면
-                //Collections.sort(arr[i]);정렬 위에서 하고 왔으니 할 필요 없음
                 String str = "";
                 if(i == 0){
                     for(int el : arr[i]){
@@ -72,7 +71,7 @@ public abstract class Cargo {
                         str += String.format(" %d", el);
                     }
                     formatArr.add(String.format("LiquidCargo:%s\n", str));
-                }//아무것도 저장된게 없다고 할 때 어떻게 할지 생각해보자
+                }
             }//else continue 비어있다면
         }
         return formatArr;

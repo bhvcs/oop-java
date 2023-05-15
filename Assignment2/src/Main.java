@@ -6,13 +6,13 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 
-public class Main {//TODO: privacy leak 확인, 일단 scanner에 공백은 신경안쓰고 했다
+public class Main {
     public static void main(String[] args) throws FileNotFoundException{
         int warehouseId = 0, truckId = 0, cargoId = 0;
         ArrayList<Warehouse> warehouses = new ArrayList<>();
         Scanner in = new Scanner(new File(args[0]));
         PrintStream out = new PrintStream(new File(args[1]));
-        String check, str;
+        String str;
         StringTokenizer st;
         Cargo cargo = null;
         Warehouse warehouse;
@@ -74,7 +74,7 @@ public class Main {//TODO: privacy leak 확인, 일단 scanner에 공백은 신�
                         warehouse.incomingTruck(new Truck(truckId++, warehouse, checks[0], checks[1],
                                 checks[2], checks[3], checks[4], fuelPerKm));
                     }catch(Exception e){}//데이터 타입이 안맞을 때, 음수일 때
-                    break;//TODO: input 오류 관리
+                    break;
                 case 3: //create a warehouse
                     try {
                         double x = Double.parseDouble(st.nextToken());
@@ -115,7 +115,7 @@ public class Main {//TODO: privacy leak 확인, 일단 scanner에 공백은 신�
                 case 7:
                     try {
                         if(st.countTokens() != 2) break;
-                        int truckFuelID = Integer.parseInt(st.nextToken());//이것도 위에서 변수 미리 선언해주는게 낫겠다
+                        int truckFuelID = Integer.parseInt(st.nextToken());
                         double fuelAmount = Double.parseDouble(st.nextToken());
                         if(fuelAmount < 0) break;
                         truck = Truck.findTruckByID(truckFuelID);
@@ -134,22 +134,5 @@ public class Main {//TODO: privacy leak 확인, 일단 scanner에 공백은 신�
         }
         in.close();
         out.close();
-    }
-    public static boolean isPositiveInteger(String s) {
-        try {
-            int a = Integer.parseInt(s);
-            if(a < 0) return false;
-            return true;
-        } catch(NumberFormatException e) {
-            return false;
-        }
-    }
-    public static boolean isPositiveDouble(String s) {
-        try {
-            if(Double.parseDouble(s)>0) return true;
-            else return false;
-        } catch(NumberFormatException e) {
-            return false;
-        }
     }
 }

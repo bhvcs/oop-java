@@ -42,7 +42,7 @@ public class Truck {
     }
 
     public ArrayList<Cargo> getCurrentCargoes() {
-        Collections.sort(currentCargoes, (o1, o2) -> o1.getID() - o2.getID());//확인
+        Collections.sort(currentCargoes, (o1, o2) -> o1.getID() - o2.getID());
         ArrayList<Cargo> sortedCurrentCargoes = new ArrayList<>();
         for (Cargo c : currentCargoes){
             sortedCurrentCargoes.add(c);
@@ -65,10 +65,10 @@ public class Truck {
         currentNumOfAllCargoes++;//어차피 예외인 애들은 위에서 false로 return 됐을 것이기에 여기에 썼다.
         currentWeight += c.getWeight();
         currentCargoes.add(c);
-        currentWarehouse.removeCargo(c); //currentWarehouse.getCargoes().remove(cargo);TODO:나중에 함수로 구현해야함, 트럭에 실었으니 remove O
+        currentWarehouse.removeCargo(c);
         return true;
     }
-    public boolean unload(Cargo c){//한번에 수정하도록 바꿔야겠다
+    public boolean unload(Cargo c){
         if(!currentCargoes.contains(c)) return false;//트럭에 짐이 없는 경우
         if (c instanceof LiquidCargo) {
             currentNumOfLiquidCargoes--;
@@ -90,12 +90,12 @@ public class Truck {
         for(Cargo c : currentCargoes){//Truck에 있는 cargo 총 consumtion
             consume += c.consumption();
         }//System.out.println("수화물 소비량: " + consume);
-        consume = (consume + fuelPerKm) * currentWarehouse.getDistance(w);//System.out.println("총 소비량: " + consume);
-        if(consume <= fuel){//System.out.println("소모");
+        consume = (consume + fuelPerKm) * currentWarehouse.getDistance(w);
+        if(consume <= fuel){
             w.incomingTruck(this);
             currentWarehouse.outgoingTruck(this);
             fuel -= consume;
-            currentWarehouse = w;//ㅈ될뻔
+            currentWarehouse = w;
             return true;
         }
         return false;//fuel이 부족한 경우
