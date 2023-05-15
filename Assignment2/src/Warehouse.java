@@ -8,8 +8,7 @@ public class Warehouse {
     private ArrayList<Truck> history = new ArrayList<>();
     private ArrayList<Truck> current = new ArrayList<>();
     private static ArrayList<Warehouse> totalWarehouses = new ArrayList<>();
-    public Warehouse(int ID, double x, double y) throws Exception {
-        if(ID < 0 || x < 0 || y < 0) throw new Exception();
+    public Warehouse(int ID, double x, double y){
         this.ID = ID;
         X = x;
         Y = y;

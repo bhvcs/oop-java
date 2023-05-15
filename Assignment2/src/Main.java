@@ -18,74 +18,65 @@ public class Main {//TODO: privacy leak 확인, 일단 scanner에 공백은 신�
         Warehouse warehouse;
         Truck truck;
         int totalEvent = in.nextInt();
+        in.nextLine();//개행문자 없애기
         while (totalEvent > 0) {
-            check = in.next();
-            int a;
-            if(isPositiveInteger(check)) {
-                a = Integer.parseInt(check);
-            }else continue;
-            switch (a) {
+            int eventcase;
+            str = in.nextLine();
+            st = new StringTokenizer(str);
+            try {
+                eventcase = Integer.parseInt(st.nextToken());
+            }catch(Exception e){//int가 아닌 string이 오는 것을 걸러내기
+                totalEvent--;
+                continue;
+            }
+            switch (eventcase) {
                 case 1://create a cargo
-                    String str1 = in.nextLine();
-                    st = new StringTokenizer(str1);//TODO:앞에 공백이 남아있다면 trim()을 써보자
-                    check = st.nextToken();
-                    int wareId;
-                    if(isPositiveInteger(check)) {
-                        wareId = Integer.parseInt(check);
-                    }else {
-                        System.out.println("break");
-                        break;
-                    }
-                    System.out.println(wareId);
-                    if (Warehouse.findWarehouseByID(wareId) == null) {//warehouse list에 있는지 없는지 확인
-                        break;
-                    }
-                    if (st.countTokens() == 1) {//무게가 몇인지
-                        check = st.nextToken();
-                        System.out.println(check);
-                        int weight;
-                        if(isPositiveInteger(check)) {
-                            weight = Integer.parseInt(check);
-                        }else break;
-                        weight = Integer.parseInt(check);
-                        if (weight <= 1000) cargo = new BasicCargo(cargoId++, weight);
-                        else cargo = new HeavyCargo(cargoId++, weight);
-                    } else if (st.countTokens() == 2) {// 무게가 몇인지, special이 무엇인지
-                        check = st.nextToken();
-                        int weight;
-                        if(isPositiveInteger(check)) {
-                            weight = Integer.parseInt(check);
-                        }else break;
-                        weight = Integer.parseInt(check);
-                        String special = st.nextToken();
-                        if (special.equals("D")) cargo = new DangerousCargo(cargoId++, weight);
-                        else if (special.equals("L")) cargo = new LiquidCargo(cargoId++, weight);
-                        else break;//D, L 말고 다른 것이 들어온 경우
-                    } else { //input개수가 넘어갈 경우
-                        break;
-                    }
-                    warehouse = Warehouse.findWarehouseByID(wareId);
-                    cargo.setCurrentWarehouse(warehouse);
-                    warehouse.addCargo(cargo);
+                    try {
+                        int wareId = Integer.parseInt(st.nextToken());
+                        if (Warehouse.findWarehouseByID(wareId) == null) {//warehouse list에 있는지 없는지 확인
+                            break;
+                        }
+                        if (st.countTokens() == 1) {//무게가 몇인지
+                            int weight = Integer.parseInt(st.nextToken());
+                            if (weight > 0 && weight <= 1000) cargo = new BasicCargo(cargoId++, weight);
+                            else if( weight > 1000) cargo = new HeavyCargo(cargoId++, weight);
+                            else break;
+                        } else if (st.countTokens() == 2) {// 무게가 몇인지, special이 무엇인지
+                            int weight = Integer.parseInt(st.nextToken());
+                            if(weight <= 0) break;
+                            String special = st.nextToken();
+                            if (special.equals("D")) cargo = new DangerousCargo(cargoId++, weight);
+                            else if (special.equals("L")) cargo = new LiquidCargo(cargoId++, weight);
+                            else break;//D, L 말고 다른 것이 들어온 경우
+                        } else { //input개수가 넘어갈 경우
+                            break;
+                        }
+                        warehouse = Warehouse.findWarehouseByID(wareId);
+                        cargo.setCurrentWarehouse(warehouse);
+                        warehouse.addCargo(cargo);
+                    }catch(Exception e){}
                     break;//case 1 종료
                 case 2://create a truck
                     try {
-                        str = in.nextLine();
-                        st = new StringTokenizer(str);
                         int truckLocationID = Integer.parseInt(st.nextToken());
                         warehouse = Warehouse.findWarehouseByID(truckLocationID);
                         if (warehouse == null) {//해당 warehouse가 없는 경우
                             break;
                         }
-                        warehouse.incomingTruck(new Truck(truckId++, warehouse, Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()),
-                                Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()),
-                                Integer.parseInt(st.nextToken()), Double.parseDouble(st.nextToken())));
-                    }catch(Exception e){}//데이터 타입이 안맞을 때
+                        if(st.countTokens() != 6) break;
+                        int[] checks = new int[5];
+                        for(int i= 0 ; i < 5; i++){
+                            checks[i] = Integer.parseInt(st.nextToken());
+                            if(checks[i] < 0) throw new Exception();
+                        }
+                        double fuelPerKm = Double.parseDouble(st.nextToken());
+                        if(fuelPerKm < 0) break;
+                        warehouse.incomingTruck(new Truck(truckId++, warehouse, checks[0], checks[1],
+                                checks[2], checks[3], checks[4], fuelPerKm));
+                    }catch(Exception e){}//데이터 타입이 안맞을 때, 음수일 때
                     break;//TODO: input 오류 관리
                 case 3: //create a warehouse
                     try {
-                        str = in.nextLine();
-                        st = new StringTokenizer(str);
                         double x = Double.parseDouble(st.nextToken());
                         double y = Double.parseDouble(st.nextToken());
                         warehouses.add(new Warehouse(warehouseId++, x, y));
@@ -93,8 +84,7 @@ public class Main {//TODO: privacy leak 확인, 일단 scanner에 공백은 신�
                     break;
                 case 4:
                     try {
-                        str = in.nextLine();
-                        st = new StringTokenizer(str);
+                        if(st.countTokens() != 2) break;
                         int truckLoadID = Integer.parseInt(st.nextToken());
                         int cargoLoadID = Integer.parseInt(st.nextToken());
                         truck = Truck.findTruckByID(truckLoadID);
@@ -104,8 +94,9 @@ public class Main {//TODO: privacy leak 확인, 일단 scanner에 공백은 신�
                     break;
                 case 5:
                     try {
-                        int truckUnloadID = in.nextInt();
-                        int cargoUnloadID = in.nextInt();
+                        if(st.countTokens() != 2) break;
+                        int truckUnloadID = Integer.parseInt(st.nextToken());
+                        int cargoUnloadID = Integer.parseInt(st.nextToken());
                         truck = Truck.findTruckByID(truckUnloadID);
                         cargo = Cargo.findCargoByID(cargoUnloadID);
                         if (truck != null && cargo != null) truck.unload(cargo);
@@ -113,8 +104,9 @@ public class Main {//TODO: privacy leak 확인, 일단 scanner에 공백은 신�
                     break;
                 case 6:
                     try {
-                        int truckMoveID = in.nextInt();
-                        int warehouseMoveID = in.nextInt();
+                        if(st.countTokens() != 2) break;
+                        int truckMoveID = Integer.parseInt(st.nextToken());
+                        int warehouseMoveID = Integer.parseInt(st.nextToken());
                         truck = Truck.findTruckByID(truckMoveID);
                         warehouse = Warehouse.findWarehouseByID(warehouseMoveID);
                         if (truck != null && warehouse != null) truck.sailTo(warehouse);
@@ -122,8 +114,10 @@ public class Main {//TODO: privacy leak 확인, 일단 scanner에 공백은 신�
                     break;
                 case 7:
                     try {
-                        int truckFuelID = in.nextInt();//이것도 위에서 변수 미리 선언해주는게 낫겠다
-                        double fuelAmount = in.nextDouble();
+                        if(st.countTokens() != 2) break;
+                        int truckFuelID = Integer.parseInt(st.nextToken());//이것도 위에서 변수 미리 선언해주는게 낫겠다
+                        double fuelAmount = Double.parseDouble(st.nextToken());
+                        if(fuelAmount < 0) break;
                         truck = Truck.findTruckByID(truckFuelID);
                         if (truck != null) truck.reFuel(fuelAmount);//truck이 없는 경우, 아무것도 안하겠다
                     } catch (Exception e) {}
