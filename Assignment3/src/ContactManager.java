@@ -14,8 +14,7 @@ public class ContactManager {
         this.contactStorage = new MyStorage<ContactInfo>();
     }
     public void setStorageSize() throws Exception{
-        int sizeInput = cli.getSetSizeMenu();
-        if(sizeInput < contactStorage.size) throw new Exception("please set size bigger than current size"); //sizeInput < 0 &&
+        int sizeInput = cli.getSetSizeMenu(contactStorage.size);
         contactStorage.setSize(sizeInput);
     }
     public void saveToFile() throws FileNotFoundException {
@@ -42,7 +41,7 @@ public class ContactManager {
     }
     public void createContact() throws Exception{
         if(contactStorage.size == 0) throw new Exception("please set contact size first");
-        if(contactStorage.storage.size() >= contactStorage.size) throw new Exception("storage is full");
+        if(contactStorage.size > -1 && contactStorage.storage.size() >= contactStorage.size) throw new Exception("storage is full");
         String[] contactInput = cli.getCreateContactMenu();
         ContactInfo contact = null;
         switch(Integer.parseInt(contactInput[0])){
@@ -52,7 +51,7 @@ public class ContactManager {
             }case 2:{//club contact을 create하고자 하는 경우
                 contact = new ClubContact(contactInput[1], contactInput[2], contactInput[3]);
                 break;
-            }case 3:{//normal contact을 create하고자 하는 경우
+            }case 3:{//department contact을 create하고자 하는 경우
                 contact = new DepartmentContact(contactInput[1], contactInput[2], contactInput[3]);
                 break;
             }
@@ -74,7 +73,6 @@ public class ContactManager {
         if(i == -1) throw new Exception("that contact does not exist");
         cli.printContact(contactStorage.storage.get(i).toString());
         contactStorage.storage.remove(i);//삭제 완료
-        contactStorage.size--;
     }
     public void editContact() throws Exception{
         if(contactStorage.size == 0) throw new Exception("please set contact size first");

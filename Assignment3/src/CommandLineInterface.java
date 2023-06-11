@@ -31,18 +31,20 @@ public class CommandLineInterface {
         }
     }
 
-    public int getSetSizeMenu() throws Exception {
-        System.out.print("Set size of contact storage (integer or Inf): ");
+    public int getSetSizeMenu(int prevSize) throws Exception {
+        System.out.print("Set size of contact storage (integer or Inf=0): ");
         String tmp = scanner.nextLine();
         int size;
         try{
-            if(tmp.equals("Inf")) size = (int)Double.POSITIVE_INFINITY;
-            else size = Integer.parseInt(tmp);
-            System.out.printf("Size change to %d\n", size);
-            return size;
+            size = Integer.parseInt(tmp);
         }catch(Exception e){
             throw new Exception("Size should be integer or Inf");
         }
+        if(size == 0) size = -1;
+        if(size == -1 && prevSize > -1) System.out.println("size change to infinity");
+        else if(size <= prevSize || prevSize <= -1) throw new Exception("please set size bigger than current size");
+        else System.out.printf("size change to %d\n", size);
+        return size;
     }
     public String[] getCreateContactMenu() throws Exception{
         System.out.println("Create contact...");
